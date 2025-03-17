@@ -1,6 +1,8 @@
 syntax = "proto3";
 package ecommerce;
 
+option go_package = "productinfo/service/ecommerce";
+
 service ProductInfo {
     rpc addProduct(Product) returns (ProductID);
     rpc getProduct(ProductID) returns (Product);
