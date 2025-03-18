@@ -5,6 +5,9 @@ go 1.23.0
 toolchain go1.24.1
 
 require (
+	github.com/gofrs/uuid v4.4.0+incompatible // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	golang.org/x/net v0.37.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
