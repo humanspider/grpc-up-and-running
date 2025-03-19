@@ -28,3 +28,12 @@ func (s *server) AddProduct(ctx context.Context, in *pb.Product) (*pb.ProductID,
 	s.productMap[in.Id] = in
 	return &pb.ProductID{Value: in.Id}, status.New(codes.OK, "").Err()
 }
+
+// GetProduct implements ecommerce.GetProduct
+func (s *server) GetProduct(ctx context.Context, in *pb.ProductID) (*pb.Product, error) {
+	value, exists := s.productMap[in.Value]
+	if exists {
+		return value, status.New(codes.OK, "").Err()
+	}
+	return nil, status.Errorf(codes.NotFound, "Product does not exist: %s", in.Value)
+}
