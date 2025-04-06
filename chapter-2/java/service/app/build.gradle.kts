@@ -32,18 +32,21 @@ dependencies {
     implementation("com.google.protobuf:protoc:4.30.2")
     implementation("io.grpc:protoc-gen-grpc-java:1.71.0")
     implementation("com.google.protobuf:protobuf-java:4.30.2")
+
+    // Used in the generated code
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.google.protobuf:protoc:4.30.2")
-        classpath("io.grpc:protoc-gen-grpc-java:1.71.0")
-        classpath("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
-    }
-}
+// buildscript {
+//     repositories {
+//         mavenCentral()
+//     }
+//     dependencies {
+//         classpath("com.google.protobuf:protoc:4.30.2")
+//         classpath("io.grpc:protoc-gen-grpc-java:1.71.0")
+//         classpath("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
+//     }
+// }
 
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -55,8 +58,12 @@ java {
 
 sourceSets {
     main {
+        java {
+            srcDir("build/generated/source/proto/main/grpc")
+            srcDir("build/generated/source/proto/main/java")
+        }
         proto {
-            srcDir(project.rootDir.resolve("/../../proto"))
+            srcDir(project.rootDir.resolve("../../proto"))
         }
     }
 }
@@ -73,7 +80,7 @@ protobuf {
     generateProtoTasks {
         all().forEach { task ->
             task.plugins {
-                register("grpc") {}
+                id("grpc") {}
             }
         }
     }

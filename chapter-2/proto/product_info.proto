@@ -1,4 +1,5 @@
-edition = "2023";
+syntax = "proto3";
+
 package ecommerce;
 
 option go_package = "productinfo/service/ecommerce";
