@@ -1,6 +1,6 @@
 # Set Up
 
-## Install gRPC
+## Install protoc
 
 Download the latest release zip from here: https://github.com/protocolbuffers/protobuf/releases/
 
@@ -8,7 +8,7 @@ Uncompress the file `protobuf-<version>-<arch>.<tar.gz or zip>`.
 
 Place the extracted contents of `bin` in `usr/local/bin` and `include` in `usr/local/include`.
 
-## Golang service
+## Golang Generation
 
 In your service project directory, create a new Go module: `go mod init productinfo/service`
 
@@ -42,3 +42,42 @@ Protobuf Edition 2023 introduces a more explicit and consistent way to handle op
 
 ## Java service
 
+Gradle allows you to handle protoc as a project dependency, so you don't need to download protoc manually.
+
+Gradle protobuf plugin will coordinate the gRPC and protobuf Java generation.
+
+1. Specify the source directory for the protobuf files, as well as the generated Java files
+```kotlin
+sourceSets {
+    main {
+        java {
+            srcDir("build/generated/source/proto/main/grpc")
+            srcDir("build/generated/source/proto/main/java")
+        }
+        proto {
+            srcDir(project.rootDir.resolve("../../proto"))
+        }
+    }
+}
+```
+2. Configure protobuf plugin to use the protoc library and the gRPC gen Java plugin
+```kotlin
+protobuf {
+    protoc {
+        artifact = libs.protoc.compiler.get().toString()
+    }
+    plugins {
+        id("grpc") {
+            artifact = libs.protoc.gen.plugin.get().toString()
+        }
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins {
+                id("grpc") {}
+            }
+        }
+    }
+}
+```
+3. Run `./gradlew build` to generate the gRPC and protobuf Java files. They will be output in `build/generated/source/proto/main/grpc` and `build/generated/source/proto/main/java`.
