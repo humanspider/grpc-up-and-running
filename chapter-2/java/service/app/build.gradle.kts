@@ -9,7 +9,7 @@ import com.google.protobuf.gradle.*
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
-    id("com.google.protobuf") version "0.9.4"
+    id("com.google.protobuf") version libs.versions.protobuf.plugin.get().toString()
 }
 
 repositories {
@@ -26,15 +26,15 @@ dependencies {
     // This dependency is used by the application.
     implementation(libs.guava)
 
-    implementation("io.grpc:grpc-protobuf:1.71.0")
-    implementation("io.grpc:grpc-stub:1.71.0")
-    implementation("io.grpc:grpc-netty:1.71.0")
-    implementation("com.google.protobuf:protoc:4.30.2")
-    implementation("io.grpc:protoc-gen-grpc-java:1.71.0")
-    implementation("com.google.protobuf:protobuf-java:4.30.2")
+    implementation(libs.grpc.protobuf)
+    implementation(libs.grpc.stub)
+    implementation(libs.grpc.netty)
+    implementation(libs.protoc.gen.plugin)
+    implementation(libs.protoc.compiler)
+    implementation(libs.protobuf.java)
 
     // Used in the generated code
-    implementation("javax.annotation:javax.annotation-api:1.3.2")
+    implementation(libs.javax.annotation.api)
 }
 
 // buildscript {
@@ -70,11 +70,11 @@ sourceSets {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.30.2"
+        artifact = libs.protoc.compiler.get().toString()
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.71.0"
+            artifact = libs.protoc.gen.plugin.get().toString()
         }
     }
     generateProtoTasks {
@@ -88,7 +88,7 @@ protobuf {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.App"
+    mainClass = "ecommerce.ProductInfoServer"
 }
 
 tasks.named<Test>("test") {
