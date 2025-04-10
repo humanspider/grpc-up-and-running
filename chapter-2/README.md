@@ -20,7 +20,7 @@ Run `go get -u google.golang.org/grpc`
 
 Golang protoc plugin has migrated to a newer version, called Opaque API. 
 
-Run `go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`and `go install google.golang.org/grpc/cmd/protoc-gen-go-grpc` to install the plugin in `$GOBIN`(defaults to $GOPATH/bin).
+Run `go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`and `go install google.golang.org/grpc/cmd/protoc-gen-go-grpc` to install the plugin in `$GOBIN`(defaults to $GOPATH/bin). Include `$GOBIN` in your path so that protoc can find the plugins.
 
 ### Generate Go output
 
@@ -35,6 +35,8 @@ Here's a breakdown of the command
 4. The go-grpc flags serve the same purpose as the other flags, but for the grpc client and server output
 
 The current project layout places the protobuf definitions under the chapter-x/proto directory. If you wished to keep the protobuf definitions in the service project itself (`service/proto`), then you would use this command from the `service` root: `protoc --proto_path=proto --go_out=. --go_opt=module=productinfo/service`.
+
+Reuse these files for the client as well, placing them under the go/client/ecommerce folder.
 
 ### Proto 2023 message changes
 
