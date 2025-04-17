@@ -39,5 +39,5 @@ func (s *server) GetProduct(ctx context.Context, in *pb.ProductID) (*pb.Product,
 	if exists {
 		return value, status.New(codes.OK, "").Err()
 	}
-	return nil, status.Errorf(codes.NotFound, "Product does not exist: %s", in.Value)
+	return nil, status.Errorf(codes.NotFound, "Product does not exist: %s", *in.Value)
 }

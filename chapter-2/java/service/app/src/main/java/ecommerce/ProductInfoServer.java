@@ -1,5 +1,6 @@
 package ecommerce;
 
+import java.io.IOError;
 import java.io.IOException;
 
 import io.grpc.Server;
@@ -12,9 +13,12 @@ public class ProductInfoServer {
             .addService(new ProductInfoImpl())
             .build()
             .start();
-            System.out.println("Server started, listening on " + port);
+
+        System.out.println("Server started, listening on " + port);
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.err.println("Shutting down gRPC server since JVM is shutting down");
+            System.err.println("Shutting down gGRPC server since JVM is shutting down");
+
             if (server != null) {
                 server.shutdown();
             }

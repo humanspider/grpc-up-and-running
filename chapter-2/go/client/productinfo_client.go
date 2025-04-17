@@ -26,6 +26,7 @@ func main() {
 
 	name := "Apple iPhone 11"
 	description := "Meet Apple iPhone 11. All-new dual camera system with Ultra Wide and Night mode."
+	price := float32(1000.0)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	r, err := c.AddProduct(ctx,
@@ -33,6 +34,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Could not add product: %v", err)
 	}
-	log.Printf("Product ID: %s added successfully", r.Value)
+	log.Printf("Product ID: %s added successfully", *r.Value)
 
+	product, err := c.GetProduct(ctx, &pb.ProductID{Value: r.Value})
+	if err != nil {
+		log.Fatalf("Could not get product: %v", err)
+	}
+	log.Printf("Product: %s", product.String())
 }

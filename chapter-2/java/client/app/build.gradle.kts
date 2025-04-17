@@ -53,7 +53,6 @@ sourceSets {
         }
         proto {
             srcDir(project.rootDir.resolve("../../proto/proto3"))
-            exclude("*_edition.proto")
         }
     }
 }
@@ -78,14 +77,14 @@ protobuf {
 
 application {
     // Define the main class for the application.
-    mainClass = "ecommerce.ProductInfoServer"
+    mainClass = "ecommerce.ProductInfoClient"
 }
 
 // tasks.named<Jar>("jar") {
 //     manifest {
-//         attributes["Main-Class"] = "ecommerce.ProductInfoServer"
+//         attributes["Main-Class"] = "ecommerce.ProductInfoClient"
 //     }
-//     // Create uber jar
+//     // Create Uber jar
 //     from(configurations.runtimeClasspath.get().map {
 //         if (it.isDirectory) it else zipTree(it)
 //     }) {
@@ -93,8 +92,30 @@ application {
 //     }
 // }
 
+// tasks.named<ShadowJar>("ShadowJar") {
+//     archiveBaseName.set("ecommerce-server")
+//     archiveClassifier.set("")
+//     manifest {
+//         attributes["Main-Class"] = "ecommerce.ProductInfoServer"
+//     }
+
+//     // Configure Shadow to handle gRPC service definitions correctly
+//     mergeServiceFiles()
+//     exclude("META-INF/native-image/*") // Exclude GraalVM native image configurations (optional, but can prevent issues)
+// }
+
 tasks.named("jar") {
     enabled = false
+}
+
+tasks.shadowJar {
+    /* 
+    * Java libraries often contain service descriptors files in the META-INF/services directory of the JAR. 
+    * A service descriptor typically contains a line delimited list of classes that are supported for a particular service. 
+    * At runtime, this file is read and used to configure library or application behavior.
+    * This specifically fixes an issue where the services for NameResolverProvider differ between packages and it chooses one of the service lists.
+    */
+    mergeServiceFiles()
 }
 
 tasks.named<Test>("test") {
