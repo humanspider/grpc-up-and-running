@@ -80,29 +80,6 @@ application {
     mainClass = "ecommerce.ProductInfoClient"
 }
 
-// tasks.named<Jar>("jar") {
-//     manifest {
-//         attributes["Main-Class"] = "ecommerce.ProductInfoClient"
-//     }
-//     // Create Uber jar
-//     from(configurations.runtimeClasspath.get().map {
-//         if (it.isDirectory) it else zipTree(it)
-//     }) {
-//         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//     }
-// }
-
-// tasks.named<ShadowJar>("ShadowJar") {
-//     archiveBaseName.set("ecommerce-server")
-//     archiveClassifier.set("")
-//     manifest {
-//         attributes["Main-Class"] = "ecommerce.ProductInfoServer"
-//     }
-
-//     // Configure Shadow to handle gRPC service definitions correctly
-//     mergeServiceFiles()
-//     exclude("META-INF/native-image/*") // Exclude GraalVM native image configurations (optional, but can prevent issues)
-// }
 
 tasks.named("jar") {
     enabled = false
