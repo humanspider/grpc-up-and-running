@@ -8,7 +8,7 @@ vars:
 tasks:
   build:
     cmds: 
-    - protoc --proto_path={{.PROTO_DIR}} --go_out=. --go_opt=module=productinfo/service product_info.proto --go-grpc_out=. --go-grpc_opt=module=productinfo/service
+    - protoc --proto_path={{.PROTO_DIR}} --go_out=. --go_opt=module=productinfo/service product_info.proto order_management.proto --go-grpc_out=. --go-grpc_opt=module=productinfo/service
     - go build -v -o bin/service
   run:
     cmds:

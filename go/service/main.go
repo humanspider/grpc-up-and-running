@@ -19,7 +19,8 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterProductInfoServer(s, &server{})
+	pb.RegisterProductInfoServer(s, &ProductInfoServer{})
+	pb.RegisterOrderManagementServer(s, &OrderManagementServer{})
 
 	log.Printf("Starting gRPC listener on port %s", port)
 	if err := s.Serve(lis); err != nil {

@@ -6,6 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/gofrs/uuid v4.4.0+incompatible
+	github.com/golang/protobuf v1.5.4
 	google.golang.org/grpc v1.71.1
 	google.golang.org/protobuf v1.36.6
 )
