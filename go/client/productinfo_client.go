@@ -46,17 +46,19 @@ func main() {
 	log.Printf("Product: %s", product.String())
 
 	ctx, cancel = context.WithCancel(context.Background())
-	searchStream, err := omc.SearchOrders(ctx, &wrappers.StringValue{Value: "Google"})
+	searchStream, err := omc.SearchOrders(ctx, &wrappers.StringValue{Value: "tape"})
 	if err != nil {
 		log.Fatalf("Could not get searchOrders stream: %v", err)
 	}
 
 	for {
 		searchOrder, err := searchStream.Recv()
-		if err == io.EOF {
-			break
-		} else {
-			log.Fatalf("Failed to receive order: %v")
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				log.Fatalf("Failed to receive order: %v", err)
+			}
 		}
 		log.Print("Search Result : ", searchOrder)
 	}

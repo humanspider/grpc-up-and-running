@@ -6,7 +6,8 @@ import (
 	pb "productinfo/service/ecommerce"
 	"strings"
 
-	"github.com/golang/protobuf/ptypes/wrappers"
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 type OrderManagementServer struct {
@@ -15,9 +16,9 @@ type OrderManagementServer struct {
 	pb.UnimplementedOrderManagementServer
 }
 
-func (s *OrderManagementServer) searchOrders(searchQuery *wrappers.StringValue, stream pb.OrderManagement_SearchOrdersServer) error {
+func (s *OrderManagementServer) SearchOrders(searchQuery *wrapperspb.StringValue, stream grpc.ServerStreamingServer[pb.Order]) error {
 	for key, order := range s.orderMap {
-		log.Print(key, order)
+		log.Print(key, " ", order)
 		for _, itemStr := range order.Items {
 			log.Print(itemStr)
 			if strings.Contains(itemStr, searchQuery.Value) {

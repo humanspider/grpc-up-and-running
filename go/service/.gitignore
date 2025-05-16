@@ -1,1 +1,4 @@
+# Built project binaries
 bin
+# Taskfile temp
+.task
