@@ -120,3 +120,39 @@ tasks.named<Jar>("jar") {
 * `from(..)` specifies the source files and directories to be included.
 * `configurations.runtimeClasspath.get()` collects all of the runtime dependencies into a `FileCollection`.
 * `if (it.isDirectory) it else zipTree(it)` leaves directories as-is and unpacks the JARs into individual classes and resources.
+
+# Streaming
+
+GRPC supports sever-side streaming, client-side streaming, or the combination of the two.
+
+## Server-side streaming
+
+1. Client sends a request to a service endpoint.
+2. Server sends 0 or more requests to the service over the stream.
+3. Server closes its own the sending side of the stream and sends a close request to the client.
+4. Client closes its sending side.
+
+Any further reads from the client-side will return an EOF error with OK status to the client.
+
+## Client-side streaming
+
+1. Client sends a request to a service endpoint.
+2. Client sends 0 or more requests to the service over the stream.
+3. Client sends a close request to the service and closes its own sending side of the stream (optional wait for response).
+4. Service closes its own sending side of the stream (optional response).
+
+The service may also send a close message from the service side.
+
+## Bidirectional streaming
+
+1. Client sends a request to a service endpoint.
+2. Both client and server are allowed to send 0 or more messages to each other at any arbitrary time.
+3. The client or server sends a close request, closes its own sending side of the stream. The other side receives this close request and shuts down.
+
+Bidirectional streaming client-server patterns are dependent on the implementation.
+
+## Streaming behaviors (code)
+
+If the client encounters on error on send, the stream will be aborted.
+
+If the server sends a message on an aborted stream, it will return an error.
